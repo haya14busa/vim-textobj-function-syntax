@@ -32,7 +32,11 @@ function! s:synblock(lnum, col, synname) abort
 endfunction
 
 function! s:synnamestack(lnum, col) abort
-  return map(synstack(a:lnum, a:col), {_, id -> synIDattr(id, 'name')})
+  let stack = synstack(a:lnum, a:col)
+  if empty(stack)
+    return []
+  endif
+  return map(stack, {_, id -> synIDattr(id, 'name')})
 endfunction
 
 function! s:find_start(lnum, col, synname, nest) abort
