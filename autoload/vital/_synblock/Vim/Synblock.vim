@@ -52,7 +52,7 @@ function! s:find_start(lnum, col, synname, nest) abort
       if lnum < 1
         return [1, 1]
       endif
-      let col = len(getline(lnum))
+      let col = len(getline(lnum)) + 1
     endif
     let synname = get(s:synnamestack(lnum, col), a:nest, '')
     if synname !=# a:synname
@@ -72,7 +72,7 @@ function! s:find_end(lnum, col, synname, nest) abort
     let prevcol = col
     let maxcol = get(maxcols, lnum, -1)
     if maxcol ==# -1
-      let maxcol = len(getline(lnum))
+      let maxcol = len(getline(lnum)) + 1
     endif
     if col !=# maxcol
       let col += 1
