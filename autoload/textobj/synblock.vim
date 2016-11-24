@@ -9,8 +9,9 @@ set cpo&vim
 
 let s:Synblock = vital#synblock#import('Vim.Synblock')
 
-function! textobj#synblock#func_select_i_line(synname_body) abort
-  let block = s:Synblock.synblock(line('.'), col('.'), a:synname_body)
+function! textobj#synblock#func_select_i_line(...) abort
+  let synname_body = get(a:, 1, s:detect_funcbody_synname())
+  let block = s:Synblock.synblock(line('.'), col('.'), synname_body)
   if empty(block)
     return 0
   endif
@@ -23,8 +24,9 @@ function! textobj#synblock#func_select_i_line(synname_body) abort
   return ['V', start, end]
 endfunction
 
-function! textobj#synblock#func_select_a_line(synname_body) abort
-  let block = s:Synblock.synblock(line('.'), col('.'), a:synname_body)
+function! textobj#synblock#func_select_a_line(...) abort
+  let synname_body = get(a:, 1, s:detect_funcbody_synname())
+  let block = s:Synblock.synblock(line('.'), col('.'), synname_body)
   if empty(block)
     return 0
   endif
@@ -34,6 +36,18 @@ function! textobj#synblock#func_select_a_line(synname_body) abort
     let end[1] += 1
   endif
   return ['V', start, end]
+endfunction
+
+function! s:detect_funcbody_synname() abort
+  let synnames = map(synstack(line('.'), col('.')), {_, id -> synIDattr(id, 'name')})
+  for re in ['funcblock', 'funcbody', 'functionblock', 'functionbody', 'methodblock', 'block', 'brace']
+    for name in synnames
+      if name =~? re
+        return name
+      endif
+    endfor
+  endfor
+  return ''
 endfunction
 
 let &cpo = s:save_cpo
