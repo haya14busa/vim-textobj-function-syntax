@@ -7,7 +7,7 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:Synblock = vital#synblock#import('Vim.Synblock')
+let s:Synblock = vital#textobj_function_syntax#import('Vim.Synblock')
 
 function! textobj#function#syntax#select(object_type) abort
   if a:object_type ==# 'a'
