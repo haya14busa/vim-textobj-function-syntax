@@ -1,5 +1,5 @@
 "=============================================================================
-" FILE: autoload/textobj/synblock.vim
+" FILE: autoload/textobj/function/syntax.vim
 " AUTHOR: haya14busa
 " License: MIT license
 "=============================================================================
@@ -9,7 +9,16 @@ set cpo&vim
 
 let s:Synblock = vital#synblock#import('Vim.Synblock')
 
-function! textobj#synblock#func_select_i_line(...) abort
+function! textobj#function#syntax#select(object_type) abort
+  if a:object_type ==# 'a'
+    return textobj#function#syntax#func_select_a_line()
+  elseif a:object_type ==# 'i'
+    return textobj#function#syntax#func_select_i_line()
+  endif
+  return
+endfunction
+
+function! textobj#function#syntax#func_select_i_line(...) abort
   let synname_body = get(a:, 1, s:detect_funcbody_synname())
   let block = s:Synblock.synblock(line('.'), col('.'), synname_body)
   if empty(block)
@@ -24,7 +33,7 @@ function! textobj#synblock#func_select_i_line(...) abort
   return ['V', start, end]
 endfunction
 
-function! textobj#synblock#func_select_a_line(...) abort
+function! textobj#function#syntax#func_select_a_line(...) abort
   let synname_body = get(a:, 1, s:detect_funcbody_synname())
   let block = s:Synblock.synblock(line('.'), col('.'), synname_body)
   if empty(block)
@@ -49,6 +58,7 @@ function! s:detect_funcbody_synname() abort
   endfor
   return ''
 endfunction
+
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
