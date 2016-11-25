@@ -12,3 +12,8 @@ vim-textobj-function-syntax as a fallback.
 Requirements:
 - Vim 8.0 or later
 - https://github.com/kana/vim-textobj-function 0.1.0 or later
+
+### Credit
+It's inspired by the
+[t9md/atom-vim-mode-plus](https://github.com/t9md/atom-vim-mode-plus)
+implementation of text-object for function.
